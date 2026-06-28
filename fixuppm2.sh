@@ -161,12 +161,12 @@ if [ -d ~/MagicMirror ]; then
 			echo configure the pm2 config file for MagicMirror >>$logfile
 			# if the files we need aren't here, get them
 			if [ ! -e installers/pm2_MagicMirror.json ]; then
-				curl -sL https://raw.githubusercontent.com/sdetweil/MagicMirror_scripts/master/pm2_MagicMirror.json >installers/pm2_MagicMirror.json
-				#curl -sl https://raw.githubusercontent.com/sdetweil/MagicMirror_scripts/master/mm.sh >installers/mm.sh
+				curl -sL https://raw.githubusercontent.com/quasialex/MagicMirrorPiO2W/master/pm2_MagicMirror.json >installers/pm2_MagicMirror.json
+				#curl -sl https://raw.githubusercontent.com/quasialex/MagicMirrorPiO2W/master/mm.sh >installers/mm.sh
 				#chmod +x installers/mm.sh
 			fi
 			if [ ! -e installers/mm.sh ]; then
-				curl -sL https://raw.githubusercontent.com/sdetweil/MagicMirror_scripts/master/mm.sh >installers/mm.sh
+				curl -sL https://raw.githubusercontent.com/quasialex/MagicMirrorPiO2W/master/mm.sh >installers/mm.sh
 				chmod +x installers/mm.sh
 			fi
 			if [ "$USER"  != "pi" ]; then

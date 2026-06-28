@@ -1,0 +1,45 @@
+.kuma-summary {
+  display: inline-block;
+  min-width: 170px;
+  max-width: 220px;
+  opacity: 0.82;
+  cursor: pointer;
+  text-align: right;
+}
+
+.kuma-summary-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  font-size: 13px;
+  line-height: 1.12;
+  margin-bottom: 1px;
+}
+
+.kuma-summary-name {
+  font-weight: 700;
+}
+
+.kuma-summary-status {
+  font-weight: 850;
+}
+
+.kuma-online .kuma-summary-status {
+  color: #8ff0a4;
+}
+
+.kuma-down .kuma-summary-status {
+  color: #ff7b7b;
+}
+
+.kuma-pending .kuma-summary-status {
+  color: #ffd27d;
+}
+
+.kuma-maintenance .kuma-summary-status {
+  color: #89c2ff;
+}
+
+.kuma-unknown .kuma-summary-status {
+  color: #aaaaaa;
+}

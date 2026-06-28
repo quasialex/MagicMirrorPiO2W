@@ -56,7 +56,7 @@ fi
 # Determine which Pi is running.
 date +"browser over server setup  starting  - %a %b %e %H:%M:%S %Z %Y" >>$logfile
 	cd $HOME/MagicMirror
-	curl -sL https://raw.githubusercontent.com/sdetweil/MagicMirror_scripts/master/run-start.sh >run-start.sh
+	curl -sL https://raw.githubusercontent.com/quasialex/MagicMirrorPiO2W/master/run-start.sh >run-start.sh
 	chmod +x run-start.sh
   	sed '/start\"/ c \    "start\"\:\"./run-start.sh $1\",' < package.json 	>new_package.json
 	if [ -e new_package.json ]; then
@@ -81,7 +81,7 @@ date +"browser over server setup  starting  - %a %b %e %H:%M:%S %Z %Y" >>$logfil
 			if [ ! -d installers ]; then
 				mkdir installers
 			fi
-			curl -sL https://raw.githubusercontent.com/sdetweil/MagicMirror_scripts/master/mm.sh >installers/mm.sh
+			curl -sL https://raw.githubusercontent.com/quasialex/MagicMirrorPiO2W/master/mm.sh >installers/mm.sh
 			chmod +x installers/mm.sh
 		fi
 	fi
