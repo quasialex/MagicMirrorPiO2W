@@ -53,6 +53,11 @@ Module.register("MMM-TouchRouter", {
 			return;
 		}
 
+		if (document.body.classList.contains("calendar-event-open")) {
+			this.sendNotification("CALENDAR_BACK");
+			return;
+		}
+
 		if (this.currentPage !== this.config.homePage) {
 			this.currentPage = this.config.homePage;
 			this.sendNotification("PAGE_SELECT", this.config.homePage);

@@ -3,8 +3,9 @@ Module.register("MMM-RSSPanel", {
 		feedUrl: "",
 		maxItems: 20,
 		refreshInterval: 30 * 60 * 1000,
+		articleCacheHours: 24,
 		articleMaxChars: 12000,
-		articleTimeoutMs: 10000
+		articleTimeoutMs: 12000
 	},
 
 	start: function () {
@@ -32,6 +33,14 @@ Module.register("MMM-RSSPanel", {
 	},
 
 	fetchArticle: function (item) {
+		if (!item || !item.link) {
+			this.articleLoading = false;
+			this.articleError = "No article link was found in the RSS item.";
+			this.articleText = "";
+			this.updateDom(0);
+			return;
+		}
+
 		this.articleLoading = true;
 		this.articleError = null;
 		this.articleText = "";
@@ -39,7 +48,8 @@ Module.register("MMM-RSSPanel", {
 		this.sendSocketNotification("FETCH_ARTICLE", {
 			link: item.link,
 			maxChars: this.config.articleMaxChars,
-			timeoutMs: this.config.articleTimeoutMs
+			timeoutMs: this.config.articleTimeoutMs,
+			cacheHours: this.config.articleCacheHours
 		});
 	},
 
@@ -63,12 +73,18 @@ Module.register("MMM-RSSPanel", {
 		}
 
 		if (this.error) {
-			wrapper.innerHTML = `<div class="rss-error">${this.error}</div>`;
+			const error = document.createElement("div");
+			error.className = "rss-error";
+			error.innerText = this.error;
+			wrapper.appendChild(error);
 			return wrapper;
 		}
 
 		if (!this.loaded) {
-			wrapper.innerHTML = `<div class="rss-loading">Loading news...</div>`;
+			const loading = document.createElement("div");
+			loading.className = "rss-loading";
+			loading.innerText = "Loading news...";
+			wrapper.appendChild(loading);
 			return wrapper;
 		}
 
@@ -82,6 +98,15 @@ Module.register("MMM-RSSPanel", {
 	renderList: function (wrapper) {
 		const scroller = document.createElement("div");
 		scroller.className = "rss-panel-scroll";
+
+		if (!this.items.length) {
+			const empty = document.createElement("div");
+			empty.className = "rss-empty";
+			empty.innerText = "No news items found.";
+			scroller.appendChild(empty);
+			wrapper.appendChild(scroller);
+			return wrapper;
+		}
 
 		let isPointerDown = false;
 		let didDrag = false;
@@ -148,7 +173,7 @@ Module.register("MMM-RSSPanel", {
 
 			const title = document.createElement("div");
 			title.className = "rss-title";
-			title.innerText = item.title || "";
+			title.innerText = item.title || "Untitled article";
 
 			const desc = document.createElement("div");
 			desc.className = "rss-desc";
@@ -191,7 +216,7 @@ Module.register("MMM-RSSPanel", {
 
 		const title = document.createElement("div");
 		title.className = "rss-article-title";
-		title.innerText = item.title || "";
+		title.innerText = item.title || "Untitled article";
 
 		const body = document.createElement("div");
 		body.className = "rss-article-body";
@@ -199,7 +224,7 @@ Module.register("MMM-RSSPanel", {
 		if (this.articleLoading) {
 			body.innerText = "Loading article...";
 		} else if (this.articleError) {
-			body.innerText = item.description || "Could not load the article text.";
+			body.innerText = "Could not load full article:\n" + this.articleError + "\n\nRSS summary:\n" + (item.description || "No RSS summary available.");
 		} else if (this.articleText) {
 			body.innerText = this.articleText;
 		} else {

@@ -1,0 +1,217 @@
+const NodeHelper = require("node_helper");
+
+module.exports = NodeHelper.create({
+	socketNotificationReceived: function (notification, payload) {
+		if (notification === "KUMA_BARS_FETCH") {
+			this.fetchKuma(payload);
+		}
+	},
+
+	fetchKuma: async function (payload) {
+		try {
+			const baseUrl = String(payload.baseUrl || "").replace(/\/+$/, "");
+			const statusPage = payload.statusPage || "services";
+
+			if (!baseUrl) {
+				throw new Error("MMM-KumaBars: baseUrl is not configured.");
+			}
+
+			if (typeof fetch !== "function") {
+				throw new Error("Node fetch() is not available. This needs Node 18+.");
+			}
+
+			const statusUrl = `${baseUrl}/api/status-page/${statusPage}`;
+			const heartbeatUrl = `${baseUrl}/api/status-page/heartbeat/${statusPage}`;
+
+			const [statusResponse, heartbeatResponse] = await Promise.all([
+				fetch(statusUrl, { headers: { "User-Agent": "MMM-KumaBars/1.0" } }),
+				fetch(heartbeatUrl, { headers: { "User-Agent": "MMM-KumaBars/1.0" } })
+			]);
+
+			if (!statusResponse.ok) {
+				throw new Error(`Status page API returned HTTP ${statusResponse.status}`);
+			}
+
+			if (!heartbeatResponse.ok) {
+				throw new Error(`Heartbeat API returned HTTP ${heartbeatResponse.status}`);
+			}
+
+			const statusJson = await statusResponse.json();
+			const heartbeatJson = await heartbeatResponse.json();
+
+			const groups = buildGroups({
+				publicGroupList: statusJson.publicGroupList || [],
+				heartbeatList: heartbeatJson.heartbeatList || {},
+				historyHours: Number(payload.historyHours || 24),
+				bucketMinutes: Number(payload.bucketMinutes || 60)
+			});
+
+			this.sendSocketNotification("KUMA_BARS_DATA", {
+				instanceId: payload.instanceId,
+				groups
+			});
+		} catch (error) {
+			this.sendSocketNotification("KUMA_BARS_ERROR", {
+				instanceId: payload.instanceId,
+				error: error.message
+			});
+		}
+	}
+});
+
+function buildGroups({ publicGroupList, heartbeatList, historyHours, bucketMinutes }) {
+	return publicGroupList
+		.slice()
+		.sort((a, b) => Number(a.weight || 0) - Number(b.weight || 0))
+		.map((group) => {
+			const monitors = (group.monitorList || []).map((monitor) => {
+				const heartbeats = heartbeatList[String(monitor.id)] || [];
+
+				return {
+					id: monitor.id,
+					name: monitor.name,
+					type: monitor.type,
+					...summariseMonitor(heartbeats, historyHours, bucketMinutes)
+				};
+			});
+
+			return {
+				id: group.id,
+				name: group.name,
+				weight: group.weight,
+				monitors
+			};
+		});
+}
+
+function summariseMonitor(heartbeats, historyHours, bucketMinutes) {
+	const now = Date.now();
+	const historyMs = historyHours * 60 * 60 * 1000;
+	const bucketMs = bucketMinutes * 60 * 1000;
+	const bucketCount = Math.max(1, Math.ceil(historyMs / bucketMs));
+	const startMs = now - historyMs;
+
+	const buckets = Array.from({ length: bucketCount }, (_, index) => ({
+		index,
+		total: 0,
+		up: 0,
+		down: 0,
+		warn: 0,
+		startMs: startMs + index * bucketMs,
+		endMs: startMs + (index + 1) * bucketMs
+	}));
+
+	let latest = null;
+
+	for (const heartbeat of heartbeats) {
+		const ts = parseKumaTime(heartbeat.time);
+
+		if (!Number.isFinite(ts)) {
+			continue;
+		}
+
+		if (!latest || ts > latest.ts) {
+			latest = {
+				ts,
+				status: Number(heartbeat.status),
+				ping: heartbeat.ping
+			};
+		}
+
+		if (ts < startMs || ts > now) {
+			continue;
+		}
+
+		const index = Math.floor((ts - startMs) / bucketMs);
+
+		if (index < 0 || index >= buckets.length) {
+			continue;
+		}
+
+		const bucket = buckets[index];
+		const status = Number(heartbeat.status);
+
+		bucket.total += 1;
+
+		if (status === 1) {
+			bucket.up += 1;
+		} else if (status === 0) {
+			bucket.down += 1;
+		} else {
+			bucket.warn += 1;
+		}
+	}
+
+	const known = buckets.reduce((sum, bucket) => sum + bucket.total, 0);
+	const up = buckets.reduce((sum, bucket) => sum + bucket.up, 0);
+
+	const availability = known > 0 ? Math.round((up / known) * 100) : null;
+
+	const current = statusFromHeartbeat(latest);
+
+	return {
+		statusText: current.text,
+		statusClass: current.className,
+		availability,
+		availabilityText: availability === null ? "—" : `${availability}%`,
+		bars: buckets.map(bucketToBar)
+	};
+}
+
+function bucketToBar(bucket) {
+	let state = "empty";
+
+	if (bucket.total === 0) {
+		state = "empty";
+	} else if (bucket.down > 0) {
+		state = "down";
+	} else if (bucket.warn > 0) {
+		state = "warn";
+	} else {
+		state = "up";
+	}
+
+	return {
+		state,
+		label: `${formatTime(bucket.startMs)}–${formatTime(bucket.endMs)}`
+	};
+}
+
+function statusFromHeartbeat(latest) {
+	if (!latest) {
+		return { text: "Unknown", className: "unknown" };
+	}
+
+	if (latest.status === 1) {
+		return { text: "Online", className: "up" };
+	}
+
+	if (latest.status === 0) {
+		return { text: "Down", className: "down" };
+	}
+
+	if (latest.status === 3) {
+		return { text: "Maintenance", className: "warn" };
+	}
+
+	return { text: "Pending", className: "warn" };
+}
+
+function parseKumaTime(value) {
+	if (!value) {
+		return NaN;
+	}
+
+	/* Uptime Kuma usually returns "YYYY-MM-DD HH:mm:ss".
+	   Treat it as local time on the Pi. */
+	return new Date(String(value).replace(" ", "T")).getTime();
+}
+
+function formatTime(ms) {
+	const d = new Date(ms);
+	return d.toLocaleTimeString([], {
+		hour: "2-digit",
+		minute: "2-digit",
+		hour12: false
+	});
+}

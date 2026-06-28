@@ -215,14 +215,16 @@ let config = {
 		},
 		{
 			module: "MMM-RSSPanel",
-			position: "fullscreen_above",
 			header: "BBC News",
+			position: "middle_center",
 			classes: "page-news news-detail",
 			config: {
 				feedUrl: "https://feeds.bbci.co.uk/news/world/rss.xml",
 				maxItems: 20,
 				refreshInterval: 30 * 60 * 1000,
-				scrollStep: 180
+				articleCacheHours: 24,
+				articleMaxChars: 12000,
+				articleTimeoutMs: 12000
 			}
 		},
 		{

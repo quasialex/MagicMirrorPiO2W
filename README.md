@@ -1,9 +1,6 @@
 # MagicMirror² installation and setup scripts
 
 # DO NOT CLONE this repo, execute by copy/pasting one of the command lines below
-# that way you always use the most up to date script(s)
-# DO NOT CLONE this repo
-
 
 These scripts can be used to automate installation and release upgrades.
 
@@ -101,3 +98,10 @@ if you want to setup an external browser over server mode, then run the script
 ```bash
 bash -c "$(curl -sL https://raw.githubusercontent.com/quasialex/MagicMirrorPiO2W/master/setup_browser_over_server.sh)"
 ```
+
+## Credits
+
+The MagicMirror installation script foundation is based on Sam Detweiler's MagicMirror scripts:
+https://github.com/sdetweil/MagicMirror_scripts
+
+This repository adds a Pi Zero 2 W / 7-inch touchscreen dashboard profile, custom modules, styling, and installer integration.

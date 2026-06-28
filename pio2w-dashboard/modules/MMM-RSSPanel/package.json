@@ -1,0 +1,9 @@
+{
+  "name": "mmm-rsspanel",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@mozilla/readability": "latest",
+    "jsdom": "latest"
+  }
+}

@@ -3,7 +3,7 @@ Module.register("MMM-CalendarPanel", {
 		calendars: [],
 		maxItems: 34,
 		maxDays: 120,
-		refreshInterval: 6 * 60 * 60 * 1000,
+		refreshInterval: 15 * 60 * 1000,
 		pageIndex: 1
 	},
 
@@ -29,6 +29,13 @@ Module.register("MMM-CalendarPanel", {
 	},
 
 	notificationReceived: function (notification, payload) {
+		if (notification === "CALENDAR_BACK" && this.selectedEvent) {
+			this.selectedEvent = null;
+			document.body.classList.remove("calendar-event-open");
+			this.updateDom(0);
+			return;
+		}
+
 		if (notification === "PAGE_SELECT" && payload !== this.config.pageIndex) {
 			this.selectedEvent = null;
 			document.body.classList.remove("calendar-event-open");
@@ -219,20 +226,9 @@ Module.register("MMM-CalendarPanel", {
 			scroller.appendChild(this.createDetailField("Notes", "Not included"));
 		}
 
-		this.attachDragScroll(scroller);
-
-		const backButton = document.createElement("button");
-		backButton.className = "calendar-panel-back-button";
-		backButton.innerText = "Back";
-
-		backButton.addEventListener("click", () => {
-			this.selectedEvent = null;
-			document.body.classList.remove("calendar-event-open");
-			this.updateDom(0);
-		});
-
+		/* Appointment details use the global TouchRouter Back button.
+		   Do not attach drag-scroll here; short detail pages should stay fixed. */
 		detail.appendChild(scroller);
-		detail.appendChild(backButton);
 
 		wrapper.appendChild(detail);
 		return wrapper;
@@ -248,7 +244,13 @@ Module.register("MMM-CalendarPanel", {
 
 		const value = document.createElement("div");
 		value.className = "calendar-panel-field-value";
-		value.innerText = valueText || "Not included";
+		const cleanValue = String(valueText || "").trim();
+
+		if (!cleanValue || cleanValue === "Not included") {
+			return document.createDocumentFragment();
+		}
+
+		value.innerText = cleanValue;
 
 		field.appendChild(label);
 		field.appendChild(value);
