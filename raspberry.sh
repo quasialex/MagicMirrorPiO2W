@@ -1010,6 +1010,16 @@ else
 	echo "don't know how to disable screen saver on labwc compositor" | tee -a $logfile
 fi
 
+# Install MagicMirrorPiO2W dashboard profile
+echo "Installing MagicMirrorPiO2W dashboard profile"
+
+DASHBOARD_SCRIPT_URL="${DASHBOARD_SCRIPT_URL:-https://raw.githubusercontent.com/quasialex/MagicMirrorPiO2W/master/pio2w-dashboard/install-dashboard.sh}"
+DASHBOARD_INSTALLER="/tmp/mm-pio2w-install-dashboard.sh"
+
+curl -fsSL "$DASHBOARD_SCRIPT_URL" -o "$DASHBOARD_INSTALLER"
+bash "$DASHBOARD_INSTALLER"
+rm -f "$DASHBOARD_INSTALLER"
+
 # Use pm2 control like a service MagicMirror
 read -p "Do you want use pm2 (node process manager) for auto starting of your MagicMirror (y/N)?" choice
 choice="${choice:-N}"
