@@ -14,7 +14,7 @@ These scripts can be used to automate installation and release upgrades.
 To execute the install script, copy/paste this line into the terminal window on your device (I can't say PI, cause it works in a lot of other places too).
 
 ```bash
-bash -c  "$(curl -sL https://raw.githubusercontent.com/sdetweil/MagicMirror_scripts/master/raspberry.sh)"
+bash -c  "$(curl -sL https://raw.githubusercontent.com/quasialex/MagicMirrorPiO2W/master/raspberry.sh)"
 ```
 
 There is a log file, ~/install.log, created so we can be able to diagnose any problems.
@@ -33,14 +33,14 @@ Give it a try!
 This works on Mac as well, copy/paste the following line into the terminal window on your device:
 
 ```bash
-bash -c  "$(curl -sL https://raw.githubusercontent.com/sdetweil/MagicMirror_scripts/master/upgrade-script.sh)"
+bash -c  "$(curl -sL https://raw.githubusercontent.com/quasialex/MagicMirrorPiO2W/master/upgrade-script.sh)"
 ```
 No changes are made to the local repo or the working copy.
 
 If you WANT to actually apply the changes, copy/paste this line into the terminal window on your device:
 
 ```bash
-bash -c  "$(curl -sL https://raw.githubusercontent.com/sdetweil/MagicMirror_scripts/master/upgrade-script.sh)" apply
+bash -c  "$(curl -sL https://raw.githubusercontent.com/quasialex/MagicMirrorPiO2W/master/upgrade-script.sh)" apply
 ```
 There is a log file (`upgrade.log`)  in the `MagicMirror/installers` folder.
 
@@ -55,14 +55,14 @@ I have provided those separately here too, in case you need to run one separatel
 `screensaveroff.sh`, copy/paste this line into the terminal window on your device:
 
 ```bash
-bash -c "$(curl -sL https://raw.githubusercontent.com/sdetweil/MagicMirror_scripts/master/screensaveroff.sh)"
+bash -c "$(curl -sL https://raw.githubusercontent.com/quasialex/MagicMirrorPiO2W/master/screensaveroff.sh)"
 ```
 ### Add using pm2 to autostart MagicMirror at bootup
 
 `fixuppm2.sh`, copy/paste this line into the terminal window on your device:
 
 ```bash
-bash -c "$(curl -sL https://raw.githubusercontent.com/sdetweil/MagicMirror_scripts/master/fixuppm2.sh)"
+bash -c "$(curl -sL https://raw.githubusercontent.com/quasialex/MagicMirrorPiO2W/master/fixuppm2.sh)"
 ```
 
 ## Switch to the Midori or firefox or surf browser
@@ -99,5 +99,5 @@ if you want to setup an external browser over server mode, then run the script
 `setup_browser_over_server.sh`, copy/paste this line into the terminal window on your device:
 
 ```bash
-bash -c "$(curl -sL https://raw.githubusercontent.com/sdetweil/MagicMirror_scripts/master/setup_browser_over_server.sh)"
+bash -c "$(curl -sL https://raw.githubusercontent.com/quasialex/MagicMirrorPiO2W/master/setup_browser_over_server.sh)"
 ```

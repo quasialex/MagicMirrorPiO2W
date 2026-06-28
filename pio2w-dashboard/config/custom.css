@@ -1,0 +1,1383 @@
+/* ============================================================
+MagicMirror custom.css
+SpotPear 7" kitchen dashboard
+Clean home + touch drill-down pages
+============================================================ */
+
+/* ============================================================
+GLOBAL TOUCH
+============================================================ */
+
+.touch-calendar,
+.touch-weather,
+.touch-news,
+.touch-status {
+cursor: pointer;
+}
+
+/* ============================================================
+HOME PAGE
+============================================================ */
+
+.compact-calendar .title {
+font-size: 21px;
+font-weight: 750;
+line-height: 1.08;
+}
+
+.compact-calendar .time {
+font-size: 19px;
+white-space: nowrap;
+}
+
+.compact-calendar .symbol {
+font-size: 18px;
+width: 26px;
+}
+
+.home-forecast {
+font-size: 0.84em;
+margin-top: 8px;
+}
+
+.home-forecast table {
+width: 100%;
+}
+
+/* Home ticker: full-width, centered, single line */
+body .module.news-ticker {
+position: fixed !important;
+left: 50% !important;
+bottom: 38px !important;
+transform: translateX(-50%) !important;
+width: 92vw !important;
+max-width: 980px !important;
+z-index: 2 !important;
+text-align: center !important;
+font-size: 0.88em !important;
+}
+
+body .module.news-ticker .module-content,
+body .module.news-ticker .newsfeed,
+body .module.news-ticker .newsfeed-title {
+width: 100% !important;
+max-width: 100% !important;
+text-align: center !important;
+white-space: nowrap !important;
+overflow: hidden !important;
+text-overflow: clip !important;
+}
+
+/* ============================================================
+TINY KUMA SUMMARY ON HOME
+Keep this small and out of the way.
+============================================================ */
+
+.service-mini {
+margin-top: 12px;
+text-align: right;
+z-index: 20;
+}
+
+/* ============================================================
+CALENDAR DETAIL PAGE
+============================================================ */
+
+body .module.calendar-detail {
+width: 88vw !important;
+max-width: 930px !important;
+}
+
+body .module.calendar-detail table {
+width: 100% !important;
+table-layout: fixed !important;
+}
+
+body .module.calendar-detail .symbol {
+width: 36px !important;
+font-size: 22px !important;
+vertical-align: top !important;
+}
+
+body .module.calendar-detail .title {
+font-size: 25px !important;
+font-weight: 800 !important;
+line-height: 1.08 !important;
+max-width: 490px !important;
+white-space: normal !important;
+vertical-align: top !important;
+}
+
+body .module.calendar-detail .location {
+display: block !important;
+font-size: 17px !important;
+line-height: 1.12 !important;
+opacity: 0.86 !important;
+margin-top: 4px !important;
+max-width: 490px !important;
+white-space: normal !important;
+text-align: center !important;
+}
+
+body .module.calendar-detail .time {
+font-size: 21px !important;
+font-weight: 700 !important;
+min-width: 230px !important;
+text-align: right !important;
+white-space: nowrap !important;
+vertical-align: top !important;
+}
+
+/* ============================================================
+WEATHER DETAIL PAGE
+Left: current weather, large and readable.
+Right: forecast table.
+============================================================ */
+
+body .module.weather-current-detail {
+position: fixed !important;
+top: 92px !important;
+left: 7vw !important;
+width: 36vw !important;
+max-width: 390px !important;
+z-index: 30 !important;
+text-align: center !important;
+}
+
+/* Hide location on drill-down. You know where you are. */
+body .module.weather-current-detail .module-header {
+display: none !important;
+}
+
+body .module.weather-current-detail .currentweather {
+display: flex !important;
+flex-direction: column !important;
+align-items: center !important;
+justify-content: center !important;
+text-align: center !important;
+width: 100% !important;
+}
+
+/* Try to move wind/sun details below the main temp block.
+If MagicMirror changes markup later, it still remains readable. */
+body .module.weather-current-detail .currentweather > *:nth-child(1) {
+order: 3 !important;
+margin-top: 12px !important;
+}
+
+body .module.weather-current-detail .currentweather > *:nth-child(2) {
+order: 1 !important;
+}
+
+body .module.weather-current-detail .currentweather > *:nth-child(3) {
+order: 2 !important;
+margin-top: 5px !important;
+}
+
+/* Big current temperature */
+body .module.weather-current-detail .large {
+font-size: 96px !important;
+line-height: 0.95 !important;
+text-align: center !important;
+}
+
+/* Bigger icon */
+body .module.weather-current-detail .weathericon {
+font-size: 58px !important;
+}
+
+/* Feels-like, wind, sunrise/sunset */
+body .module.weather-current-detail .normal,
+body .module.weather-current-detail .small,
+body .module.weather-current-detail .medium {
+font-size: 23px !important;
+line-height: 1.18 !important;
+text-align: center !important;
+opacity: 0.95 !important;
+}
+
+/* Forecast table: clean right-side block */
+body .module.weather-detail {
+position: fixed !important;
+top: 106px !important;
+left: 47vw !important;
+width: 46vw !important;
+max-width: 560px !important;
+z-index: 29 !important;
+}
+
+body .module.weather-detail .module-header {
+text-align: center !important;
+font-size: 18px !important;
+margin-bottom: 18px !important;
+}
+
+/* Hide Today row because current weather already covers today */
+body .module.weather-detail table tr:first-child {
+display: none !important;
+}
+
+body .module.weather-detail table {
+width: 100% !important;
+table-layout: fixed !important;
+margin: 0 auto !important;
+}
+
+body .module.weather-detail tr {
+height: 48px !important;
+}
+
+body .module.weather-detail .day {
+width: 34% !important;
+font-size: 25px !important;
+font-weight: 800 !important;
+text-align: left !important;
+}
+
+body .module.weather-detail .weathericon {
+width: 18% !important;
+font-size: 28px !important;
+text-align: center !important;
+}
+
+body .module.weather-detail .max-temp,
+body .module.weather-detail .min-temp,
+body .module.weather-detail .precipitation-prob {
+font-size: 25px !important;
+font-weight: 800 !important;
+text-align: right !important;
+}
+
+/* ============================================================
+BBC NEWS DETAIL PAGE
+Centered panel, left-aligned text, finger-scroll.
+============================================================ */
+
+body .module.news-detail {
+position: fixed !important;
+top: 34px !important;
+left: 50% !important;
+transform: translateX(-50%) !important;
+width: 84vw !important;
+max-width: 940px !important;
+height: 520px !important;
+z-index: 40 !important;
+text-align: left !important;
+margin: 0 !important;
+}
+
+body .module.news-detail .module-header {
+text-align: center !important;
+margin-bottom: 12px !important;
+}
+
+body .module.news-detail .rss-panel {
+width: 100% !important;
+height: 470px !important;
+}
+
+body .module.news-detail .rss-panel-scroll {
+height: 450px !important;
+overflow-y: auto !important;
+overflow-x: hidden !important;
+padding-right: 16px !important;
+touch-action: none !important;
+-webkit-overflow-scrolling: touch !important;
+cursor: grab !important;
+}
+
+body .module.news-detail .rss-panel-scroll:active {
+cursor: grabbing !important;
+}
+
+body .module.news-detail .rss-panel-scroll::-webkit-scrollbar {
+width: 9px !important;
+}
+
+body .module.news-detail .rss-panel-scroll::-webkit-scrollbar-track {
+background: rgba(255,255,255,0.05) !important;
+border-radius: 8px !important;
+}
+
+body .module.news-detail .rss-panel-scroll::-webkit-scrollbar-thumb {
+background: rgba(255,255,255,0.35) !important;
+border-radius: 8px !important;
+}
+
+body .module.news-detail .rss-item {
+margin-bottom: 19px !important;
+text-align: left !important;
+}
+
+body .module.news-detail .rss-meta {
+font-size: 15px !important;
+opacity: 0.78 !important;
+margin-bottom: 3px !important;
+}
+
+body .module.news-detail .rss-title {
+font-size: 22px !important;
+line-height: 1.12 !important;
+font-weight: 800 !important;
+}
+
+body .module.news-detail .rss-desc {
+font-size: 17px !important;
+line-height: 1.22 !important;
+opacity: 0.9 !important;
+margin-top: 3px !important;
+}
+
+/* ============================================================
+SERVICES DETAIL PAGE
+Shift content slightly right for visual symmetry.
+============================================================ */
+
+body .module.service-detail {
+width: 84vw !important;
+max-width: 780px !important;
+}
+
+body .module.service-detail .module-content {
+display: flex !important;
+justify-content: center !important;
+font-size: 22px !important;
+line-height: 1.25 !important;
+transform: translateX(4vw) !important;
+}
+
+body .module.service-detail table {
+width: 620px !important;
+max-width: 620px !important;
+table-layout: fixed !important;
+margin: 0 auto !important;
+}
+
+body .module.service-detail td {
+padding: 4px 12px !important;
+}
+
+body .module.service-detail td:first-child {
+width: 68% !important;
+text-align: right !important;
+font-weight: 800 !important;
+}
+
+body .module.service-detail td:last-child {
+width: 32% !important;
+text-align: left !important;
+font-weight: 900 !important;
+}
+
+/* ============================================================
+OLD TAB INDICATOR
+Hide if still installed.
+============================================================ */
+
+.MMM-page-indicator {
+display: none !important;
+}
+
+/* ============================================================
+   FINAL-LAST POLISH
+   Home ticker full-width, weather detail centered,
+   services detail shifted right
+   ============================================================ */
+
+
+/* ---------- Home news ticker: use almost the full screen ---------- */
+
+body .module.news-ticker {
+  position: fixed !important;
+  left: 50% !important;
+  bottom: 38px !important;
+  transform: translateX(-50%) !important;
+  width: 98vw !important;
+  max-width: none !important;
+  z-index: 2 !important;
+  text-align: center !important;
+  font-size: 0.82em !important;
+}
+
+body .module.news-ticker .module-content,
+body .module.news-ticker .newsfeed,
+body .module.news-ticker .newsfeed-title {
+  width: 100% !important;
+  max-width: 100% !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: clip !important;
+}
+
+
+/* ---------- Weather detail page: center current block with forecast ---------- */
+
+body .module.weather-current-detail {
+  position: fixed !important;
+  top: 138px !important;
+  left: 6vw !important;
+  width: 38vw !important;
+  max-width: 420px !important;
+  z-index: 30 !important;
+  text-align: center !important;
+}
+
+body .module.weather-current-detail .module-header {
+  display: none !important;
+}
+
+body .module.weather-current-detail .currentweather {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  width: 100% !important;
+}
+
+/* Main icon/temp first */
+body .module.weather-current-detail .currentweather > .large {
+  order: 1 !important;
+}
+
+/* Feels-like second */
+body .module.weather-current-detail .currentweather > .feelslike,
+body .module.weather-current-detail .currentweather > *:nth-child(3) {
+  order: 2 !important;
+  margin-top: 8px !important;
+}
+
+/* Wind / sunrise / sunset line last */
+body .module.weather-current-detail .currentweather > .normal:first-child,
+body .module.weather-current-detail .currentweather > .medium:first-child,
+body .module.weather-current-detail .currentweather > *:nth-child(1) {
+  order: 3 !important;
+  margin-top: 16px !important;
+}
+
+body .module.weather-current-detail .large {
+  font-size: 92px !important;
+  line-height: 0.95 !important;
+  text-align: center !important;
+}
+
+body .module.weather-current-detail .weathericon {
+  font-size: 58px !important;
+}
+
+body .module.weather-current-detail .normal,
+body .module.weather-current-detail .small,
+body .module.weather-current-detail .medium {
+  font-size: 24px !important;
+  line-height: 1.22 !important;
+  text-align: center !important;
+  opacity: 0.96 !important;
+}
+
+
+/* Forecast table: keep it stable on the right */
+body .module.weather-detail {
+  position: fixed !important;
+  top: 118px !important;
+  left: 47vw !important;
+  width: 46vw !important;
+  max-width: 560px !important;
+  z-index: 29 !important;
+}
+
+body .module.weather-detail .module-header {
+  text-align: center !important;
+  font-size: 18px !important;
+  margin-bottom: 18px !important;
+}
+
+/* Hide Today row because current weather already covers today */
+body .module.weather-detail table tr:first-child {
+  display: none !important;
+}
+
+body .module.weather-detail table {
+  width: 100% !important;
+  table-layout: fixed !important;
+  margin: 0 auto !important;
+}
+
+body .module.weather-detail tr {
+  height: 48px !important;
+}
+
+body .module.weather-detail .day {
+  width: 34% !important;
+  font-size: 25px !important;
+  font-weight: 800 !important;
+  text-align: left !important;
+}
+
+body .module.weather-detail .weathericon {
+  width: 18% !important;
+  font-size: 28px !important;
+  text-align: center !important;
+}
+
+body .module.weather-detail .max-temp,
+body .module.weather-detail .min-temp,
+body .module.weather-detail .precipitation-prob {
+  font-size: 25px !important;
+  font-weight: 800 !important;
+  text-align: right !important;
+}
+
+
+/* ---------- Services detail page: shift whole service table right ---------- */
+
+body .module.service-detail .module-content {
+  display: flex !important;
+  justify-content: center !important;
+  font-size: 22px !important;
+  line-height: 1.25 !important;
+  transform: translateX(8vw) !important;
+}
+
+body .module.service-detail table {
+  width: 560px !important;
+  max-width: 560px !important;
+  table-layout: fixed !important;
+  margin: 0 auto !important;
+}
+
+body .module.service-detail td {
+  padding: 4px 12px !important;
+}
+
+body .module.service-detail td:first-child {
+  width: 66% !important;
+  text-align: right !important;
+  font-weight: 800 !important;
+}
+
+body .module.service-detail td:last-child {
+  width: 34% !important;
+  text-align: left !important;
+  font-weight: 900 !important;
+}
+
+
+/* ============================================================
+   RSS / NEWS READER CLEAN FINAL
+   - News list: normal Home button.
+   - Article view: hide Home button, show RSS Back button.
+   - Article title stays visible above the scrollable body.
+   ============================================================ */
+
+/* Normal news page placement */
+body .module.news-detail {
+  position: fixed !important;
+  top: 34px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: 86vw !important;
+  max-width: 960px !important;
+  height: 530px !important;
+  z-index: 40 !important;
+  text-align: left !important;
+  margin: 0 !important;
+}
+
+body .module.news-detail .module-header {
+  text-align: center !important;
+  margin-bottom: 12px !important;
+}
+
+/* News list */
+body .module.news-detail .rss-panel {
+  width: 100% !important;
+  height: 500px !important;
+}
+
+body .module.news-detail .rss-panel-scroll {
+  height: 430px !important;
+  max-height: 430px !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  padding-right: 16px !important;
+  padding-bottom: 105px !important;
+  box-sizing: border-box !important;
+  touch-action: none !important;
+  -webkit-overflow-scrolling: touch !important;
+  cursor: grab !important;
+}
+
+body .module.news-detail .rss-panel-scroll:active {
+  cursor: grabbing !important;
+}
+
+body .module.news-detail .rss-panel-scroll::-webkit-scrollbar,
+body .module.news-detail .rss-article-scroll::-webkit-scrollbar {
+  width: 9px !important;
+}
+
+body .module.news-detail .rss-panel-scroll::-webkit-scrollbar-track,
+body .module.news-detail .rss-article-scroll::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.05) !important;
+  border-radius: 8px !important;
+}
+
+body .module.news-detail .rss-panel-scroll::-webkit-scrollbar-thumb,
+body .module.news-detail .rss-article-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.35) !important;
+  border-radius: 8px !important;
+}
+
+body .module.news-detail .rss-item {
+  margin-bottom: 18px !important;
+  text-align: left !important;
+}
+
+body .module.news-detail .rss-meta {
+  font-size: 15px !important;
+  opacity: 0.78 !important;
+  margin-bottom: 3px !important;
+}
+
+body .module.news-detail .rss-title {
+  font-size: 22px !important;
+  line-height: 1.12 !important;
+  font-weight: 800 !important;
+}
+
+body .module.news-detail .rss-desc {
+  font-size: 17px !important;
+  line-height: 1.22 !important;
+  opacity: 0.9 !important;
+  margin-top: 3px !important;
+}
+
+/* Article mode: hide the normal Home router completely. */
+body.rss-article-open .module.touch-router,
+body.rss-article-open .touch-router,
+body.rss-article-open .MMM-TouchRouter {
+  display: none !important;
+}
+
+/* Article container */
+body .module.news-detail .rss-article-panel {
+  width: 100% !important;
+  height: 520px !important;
+}
+
+body .module.news-detail .rss-article {
+  width: 88vw !important;
+  max-width: 940px !important;
+  height: 500px !important;
+  margin: 0 auto !important;
+  text-align: left !important;
+}
+
+/* Title/meta area stays above the scrollable body */
+body .module.news-detail .rss-article-heading {
+  width: 100% !important;
+  max-width: 900px !important;
+  margin: 0 auto 12px auto !important;
+}
+
+body .module.news-detail .rss-article-meta {
+  font-size: 16px !important;
+  opacity: 0.76 !important;
+  margin-bottom: 6px !important;
+}
+
+body .module.news-detail .rss-article-title {
+  font-size: 29px !important;
+  line-height: 1.12 !important;
+  font-weight: 900 !important;
+  margin-bottom: 10px !important;
+}
+
+/* Article body: bigger reading area, with bottom space for Back button */
+body .module.news-detail .rss-article-scroll {
+  width: 100% !important;
+  max-width: 900px !important;
+  height: 330px !important;
+  max-height: 330px !important;
+  margin: 0 auto !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  padding-right: 18px !important;
+  padding-bottom: 115px !important;
+  box-sizing: border-box !important;
+  touch-action: none !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+body .module.news-detail .rss-article-body {
+  font-size: 22px !important;
+  line-height: 1.28 !important;
+  opacity: 0.94 !important;
+  white-space: pre-line !important;
+}
+
+/* Hide any helper/debug text */
+body .module.news-detail .rss-article-hint {
+  display: none !important;
+}
+
+/* RSS Back button: one button, same role/location as Home */
+body .module.news-detail .rss-back-button {
+  position: fixed !important;
+  left: 48px !important;
+  bottom: 8px !important;
+  width: 132px !important;
+  height: 56px !important;
+  z-index: 9999 !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  font-size: 22px !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+
+  border-radius: 15px !important;
+  border: 2px solid rgba(255,255,255,0.68) !important;
+  background: rgba(255,255,255,0.12) !important;
+  color: white !important;
+  text-shadow: none !important;
+}
+
+/* ============================================================
+   TRUE SINGLE NAV BUTTON FINAL OVERRIDE
+   TouchRouter owns the bottom-left button.
+   RSSPanel only controls whether we are in article mode.
+   ============================================================ */
+
+/* Keep router visible even in RSS article mode. */
+body.rss-article-open .module.touch-router,
+body.rss-article-open .MMM-TouchRouter,
+body.rss-article-open .touch-router {
+  display: block !important;
+}
+
+/* Kill the old pseudo-label hack completely. */
+body.rss-article-open .module.touch-router .module-content {
+  position: static !important;
+  color: inherit !important;
+  font-size: inherit !important;
+  text-shadow: none !important;
+}
+
+body.rss-article-open .module.touch-router .module-content::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* Hide any internal RSS back button from older cached code/CSS. */
+body .module.news-detail .rss-back-button {
+  display: none !important;
+}
+
+/* Bottom-left nav button: same position for Home and Back. */
+body .module.touch-router {
+  display: block !important;
+  position: fixed !important;
+  left: 48px !important;
+  bottom: 8px !important;
+  z-index: 9999 !important;
+  width: auto !important;
+  height: auto !important;
+}
+
+body .module.touch-router .module-content,
+body .module.touch-router .touch-router-wrapper {
+  width: auto !important;
+  height: auto !important;
+  color: inherit !important;
+  font-size: inherit !important;
+}
+
+body .module.touch-router .touch-router-home {
+  width: 132px !important;
+  height: 56px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  padding: 0 !important;
+  box-sizing: border-box !important;
+
+  border-radius: 15px !important;
+  border: 2px solid rgba(255,255,255,0.68) !important;
+  background: rgba(255,255,255,0.12) !important;
+  color: white !important;
+
+  font-size: 22px !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  text-align: center !important;
+  text-shadow: none !important;
+}
+
+/* Article view: preserve the larger reading area, but reserve bottom space
+   so the fixed Back button does not sit on top of the final paragraph. */
+body .module.news-detail .rss-article-scroll {
+  height: 350px !important;
+  max-height: 350px !important;
+  padding-bottom: 95px !important;
+  box-sizing: border-box !important;
+}
+
+/* ============================================================
+   CLEAN GLOBAL BACK BUTTON + RSS READER OVERRIDE
+   This replaces the old Home/Back pseudo-label experiments.
+   ============================================================ */
+
+/* Hide old/internal RSS back buttons if any cached/old code still creates them. */
+body .rss-back-button,
+body .rss-article-back,
+body .rss-reader-back {
+	display: none !important;
+}
+
+/* Kill pseudo text from previous CSS experiments. */
+body .module.touch-router .module-content::before,
+body .module.touch-router .module-content::after,
+body .touch-router-home::before,
+body .touch-router-home::after {
+	content: none !important;
+	display: none !important;
+}
+
+/* Global back button position. */
+body .module.touch-router {
+	position: fixed !important;
+	left: 48px !important;
+	bottom: 12px !important;
+	z-index: 9999 !important;
+	width: auto !important;
+	height: auto !important;
+	display: block !important;
+}
+
+body .module.touch-router .touch-router-hidden {
+	display: none !important;
+}
+
+body .module.touch-router .module-content,
+body .module.touch-router .touch-router-wrapper {
+	width: auto !important;
+	height: auto !important;
+}
+
+body .module.touch-router .touch-router-home {
+	width: 132px !important;
+	height: 56px !important;
+
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+
+	padding: 0 !important;
+	box-sizing: border-box !important;
+
+	border-radius: 15px !important;
+	border: 2px solid rgba(255,255,255,0.68) !important;
+	background: rgba(255,255,255,0.12) !important;
+	color: white !important;
+
+	font-size: 22px !important;
+	font-weight: 900 !important;
+	line-height: 1 !important;
+	text-align: center !important;
+	text-shadow: none !important;
+}
+
+/* RSS list: enough bottom breathing room so the Back button does not collide. */
+body .module.news-detail .rss-panel-scroll {
+	height: 430px !important;
+	max-height: 430px !important;
+	overflow-y: auto !important;
+	padding-bottom: 90px !important;
+	box-sizing: border-box !important;
+}
+
+/* RSS article: full reading area, title scrolls with the text. */
+body .module.news-detail .rss-article-scroll {
+	height: 455px !important;
+	max-height: 455px !important;
+	overflow-y: auto !important;
+
+	padding: 0 22px 105px 22px !important;
+	box-sizing: border-box !important;
+}
+
+body .module.news-detail .rss-article-meta {
+	font-size: 16px !important;
+	line-height: 1.15 !important;
+	margin-bottom: 8px !important;
+	opacity: 0.82 !important;
+}
+
+body .module.news-detail .rss-article-title {
+	font-size: 28px !important;
+	font-weight: 900 !important;
+	line-height: 1.08 !important;
+	margin-bottom: 22px !important;
+	white-space: normal !important;
+}
+
+body .module.news-detail .rss-article-body {
+	font-size: 22px !important;
+	font-weight: 650 !important;
+	line-height: 1.22 !important;
+	white-space: pre-line !important;
+}
+
+
+/* ============================================================
+   CALENDAR PANEL CLEAN FINAL
+   - List scrolls above the fixed Back/Home router.
+   - Appointment detail uses ONE local Back button.
+   - No duplicate Back button.
+   ============================================================ */
+
+.calendar-panel {
+  width: 88vw !important;
+  max-width: 940px !important;
+  height: 520px !important;
+  position: relative !important;
+  box-sizing: border-box !important;
+}
+
+/* Appointment list */
+.calendar-panel-scroll {
+  height: 430px !important;
+  max-height: 430px !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  padding-bottom: 105px !important;
+  box-sizing: border-box !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+.calendar-panel-row {
+  min-height: 72px !important;
+  display: grid !important;
+  grid-template-columns: 105px 1fr 190px !important;
+  gap: 18px !important;
+  align-items: center !important;
+  padding: 10px 10px !important;
+  border-bottom: 1px solid rgba(255,255,255,0.12) !important;
+  box-sizing: border-box !important;
+}
+
+.calendar-panel-row:active {
+  background: rgba(255,255,255,0.12) !important;
+}
+
+.calendar-panel-date {
+  text-align: left !important;
+  opacity: 0.92 !important;
+}
+
+.calendar-panel-weekday {
+  font-size: 20px !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+}
+
+.calendar-panel-day {
+  font-size: 17px !important;
+  line-height: 1.1 !important;
+  opacity: 0.78 !important;
+}
+
+.calendar-panel-main {
+  text-align: left !important;
+  min-width: 0 !important;
+}
+
+.calendar-panel-title {
+  font-size: 24px !important;
+  font-weight: 850 !important;
+  line-height: 1.08 !important;
+  white-space: normal !important;
+}
+
+.calendar-panel-location {
+  font-size: 16px !important;
+  line-height: 1.12 !important;
+  opacity: 0.72 !important;
+  margin-top: 3px !important;
+  white-space: normal !important;
+}
+
+.calendar-panel-time {
+  text-align: right !important;
+  font-size: 21px !important;
+  font-weight: 800 !important;
+  white-space: nowrap !important;
+}
+
+.calendar-panel-empty,
+.calendar-panel-loading,
+.calendar-panel-error {
+  font-size: 24px !important;
+  text-align: center !important;
+  margin-top: 160px !important;
+}
+
+/* Appointment detail */
+.calendar-panel-detail {
+  width: 100% !important;
+  height: 520px !important;
+  position: relative !important;
+  box-sizing: border-box !important;
+}
+
+.calendar-panel-detail-scroll {
+  height: 430px !important;
+  max-height: 430px !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  padding: 8px 18px 110px 18px !important;
+  box-sizing: border-box !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+.calendar-panel-detail-title {
+  font-size: 32px !important;
+  font-weight: 900 !important;
+  line-height: 1.08 !important;
+  text-align: center !important;
+  margin-bottom: 22px !important;
+}
+
+.calendar-panel-field {
+  margin-bottom: 17px !important;
+  text-align: center !important;
+}
+
+.calendar-panel-field-label {
+  font-size: 15px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.06em !important;
+  opacity: 0.62 !important;
+  margin-bottom: 4px !important;
+}
+
+.calendar-panel-field-value {
+  font-size: 23px !important;
+  font-weight: 750 !important;
+  line-height: 1.18 !important;
+  white-space: pre-wrap !important;
+}
+
+.calendar-panel-notes .calendar-panel-field-value {
+  font-size: 21px !important;
+  font-weight: 650 !important;
+  line-height: 1.22 !important;
+  text-align: left !important;
+  max-width: 780px !important;
+  margin: 0 auto !important;
+}
+
+/* Appointment detail owns its own Back button. */
+.calendar-panel-back-button {
+  position: fixed !important;
+  left: 48px !important;
+  bottom: 12px !important;
+  width: 132px !important;
+  height: 56px !important;
+  z-index: 9999 !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  padding: 0 !important;
+  box-sizing: border-box !important;
+
+  border-radius: 15px !important;
+  border: 2px solid rgba(255,255,255,0.68) !important;
+  background: rgba(255,255,255,0.12) !important;
+  color: white !important;
+
+  font-size: 22px !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  text-align: center !important;
+  text-shadow: none !important;
+}
+
+/* While inside one appointment, hide the global router.
+   This prevents duplicate Back buttons. */
+body.calendar-event-open .module.touch-router,
+body.calendar-event-open .touch-router,
+body.calendar-event-open .MMM-TouchRouter,
+body.calendar-event-open .module.MMM-TouchRouter {
+  display: none !important;
+  pointer-events: none !important;
+}
+
+/* ============================================================
+   KUMA BARS DETAIL PAGE
+   24h visual availability history from Uptime Kuma.
+   ============================================================ */
+
+body .module.kuma-bars-detail {
+  position: fixed !important;
+  top: 34px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: 88vw !important;
+  max-width: 960px !important;
+  height: 520px !important;
+  z-index: 40 !important;
+  margin: 0 !important;
+}
+
+.kuma-bars {
+  width: 100% !important;
+  height: 500px !important;
+  box-sizing: border-box !important;
+}
+
+.kuma-bars-scroll {
+  height: 430px !important;
+  max-height: 430px !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  padding: 2px 18px 105px 18px !important;
+  box-sizing: border-box !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+.kuma-group {
+  margin-bottom: 18px !important;
+}
+
+.kuma-group-title {
+  font-size: 18px !important;
+  font-weight: 850 !important;
+  line-height: 1 !important;
+  opacity: 0.86 !important;
+  text-align: left !important;
+  margin: 0 0 9px 0 !important;
+}
+
+.kuma-row {
+  display: grid !important;
+  grid-template-columns: 185px 82px 58px 1fr !important;
+  gap: 12px !important;
+  align-items: center !important;
+  min-height: 34px !important;
+  margin: 4px 0 !important;
+  box-sizing: border-box !important;
+}
+
+.kuma-name {
+  font-size: 19px !important;
+  font-weight: 800 !important;
+  text-align: right !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.kuma-status {
+  font-size: 17px !important;
+  font-weight: 900 !important;
+  text-align: left !important;
+  white-space: nowrap !important;
+}
+
+.kuma-availability {
+  font-size: 16px !important;
+  font-weight: 850 !important;
+  text-align: right !important;
+  opacity: 0.9 !important;
+}
+
+.kuma-history {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 3px !important;
+  min-width: 0 !important;
+}
+
+.kuma-bar {
+  width: 7px !important;
+  height: 22px !important;
+  border-radius: 5px !important;
+  opacity: 0.95 !important;
+  flex: 0 0 auto !important;
+}
+
+.kuma-bar-up {
+  background: rgba(78, 255, 145, 0.92) !important;
+}
+
+.kuma-bar-down {
+  background: rgba(255, 84, 84, 0.95) !important;
+}
+
+.kuma-bar-warn {
+  background: rgba(255, 196, 77, 0.95) !important;
+}
+
+.kuma-bar-empty {
+  background: rgba(255,255,255,0.14) !important;
+}
+
+.kuma-status.up {
+  color: rgba(78, 255, 145, 0.95) !important;
+}
+
+.kuma-status.down {
+  color: rgba(255, 84, 84, 0.95) !important;
+}
+
+.kuma-status.warn {
+  color: rgba(255, 196, 77, 0.95) !important;
+}
+
+.kuma-status.unknown {
+  color: rgba(255,255,255,0.65) !important;
+}
+
+.kuma-bars-loading,
+.kuma-bars-error {
+  font-size: 24px !important;
+  text-align: center !important;
+  margin-top: 170px !important;
+}
+
+/* ============================================================
+   ABSOLUTE FINAL BACK BUTTON STABILITY PATCH
+   One visual position. No drifting. No overlap surprises.
+   ============================================================ */
+
+/* Global router button: same physical place everywhere */
+body .module.touch-router,
+body .module.global-nav {
+  position: fixed !important;
+  left: 48px !important;
+  bottom: 12px !important;
+  width: 132px !important;
+  height: 56px !important;
+  z-index: 10000 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: block !important;
+}
+
+/* Calendar appointment-detail local Back button: force same physical place */
+body .calendar-panel-back-button {
+  position: fixed !important;
+  left: 48px !important;
+  bottom: 12px !important;
+  width: 132px !important;
+  height: 56px !important;
+  min-width: 132px !important;
+  min-height: 56px !important;
+  z-index: 10001 !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+
+  border-radius: 15px !important;
+  border: 2px solid rgba(255,255,255,0.68) !important;
+  background: rgba(255,255,255,0.12) !important;
+  color: white !important;
+
+  font-size: 22px !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  text-align: center !important;
+  text-shadow: none !important;
+}
+
+/* Appointment list/detail scroll areas: preserve full space but stop before button */
+body .calendar-panel-scroll,
+body .calendar-panel-detail-scroll {
+  height: 455px !important;
+  max-height: 455px !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  padding-bottom: 96px !important;
+  box-sizing: border-box !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+/* In appointment detail view, use only the local Back button */
+body.calendar-event-open .module.touch-router,
+body.calendar-event-open .touch-router,
+body.calendar-event-open .MMM-TouchRouter,
+body.calendar-event-open .module.MMM-TouchRouter,
+body.calendar-event-open .module.global-nav {
+  display: none !important;
+  pointer-events: none !important;
+}
+
+/* In calendar list view, no local Back button should appear unless event detail is open */
+body:not(.calendar-event-open) .calendar-panel-back-button {
+  display: none !important;
+}
+
+
+/* ============================================================
+   KUMA BARS WIDTH PATCH
+   Make bars fit the 7" screen cleanly.
+   ============================================================ */
+
+body .module.kuma-bars-detail {
+  width: 90vw !important;
+  max-width: 980px !important;
+}
+
+.kuma-bars-scroll {
+  height: 430px !important;
+  max-height: 430px !important;
+  padding: 2px 8px 105px 8px !important;
+  box-sizing: border-box !important;
+}
+
+.kuma-row {
+  grid-template-columns: 220px 78px 54px 1fr !important;
+  gap: 9px !important;
+  min-height: 34px !important;
+}
+
+.kuma-name {
+  font-size: 18px !important;
+}
+
+.kuma-status {
+  font-size: 16px !important;
+}
+
+.kuma-availability {
+  font-size: 15px !important;
+}
+
+.kuma-history {
+  justify-content: flex-start !important;
+  gap: 2px !important;
+}
+
+.kuma-bar {
+  width: 6px !important;
+  height: 22px !important;
+  border-radius: 5px !important;
+}
+

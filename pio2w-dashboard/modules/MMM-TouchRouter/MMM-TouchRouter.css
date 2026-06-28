@@ -1,0 +1,22 @@
+.touch-router-wrapper {
+  position: fixed;
+  left: 28px;
+  bottom: 28px;
+  z-index: 9999;
+}
+
+.touch-router-home-button {
+  font-size: 22px;
+  font-weight: 800;
+  padding: 12px 24px;
+  min-width: 108px;
+  min-height: 50px;
+  border-radius: 16px;
+  border: 2px solid rgba(255,255,255,0.55);
+  color: white;
+  background: rgba(255,255,255,0.14);
+}
+
+.touch-router-home-button:active {
+  background: rgba(255,255,255,0.32);
+}

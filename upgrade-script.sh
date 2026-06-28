@@ -959,7 +959,7 @@ if [ -d ~/$mfn ]; then
 									else
 										# oops didn't save mm.sh or it was lost on prior run
 										echo "oops, was no saved copy of mm.shm restore from repo" >> $logfile
-										curl -sL https://raw.githubusercontent.com/sdetweil/MagicMirror_scripts/master/mm.sh >installers/mm.sh
+										curl -sL https://raw.githubusercontent.com/quasialex/MagicMirrorPiO2W/master/mm.sh >installers/mm.sh
 										chmod +x installers/mm.sh
 									fi
 								else    
@@ -999,7 +999,7 @@ if [ -d ~/$mfn ]; then
 											echo "$keyfile update for armv6l failed " >>$logfile
 										fi
 										if [ ! -e run-start.sh ]; then
-											curl -sL https://raw.githubusercontent.com/sdetweil/MagicMirror_scripts/master/run-start.sh >run-start.sh
+											curl -sL https://raw.githubusercontent.com/quasialex/MagicMirrorPiO2W/master/run-start.sh >run-start.sh
 											chmod +x run-start.sh
 										fi
 											# on armv6l, new OS's have a bug in browser support
@@ -1058,7 +1058,7 @@ if [ -d ~/$mfn ]; then
 											else
 												echo "$keyfile update for armv6l failed " >>$logfile
 											fi
-											curl -sL https://raw.githubusercontent.com/sdetweil/MagicMirror_scripts/master/run-start.sh >run-start.sh
+											curl -sL https://raw.githubusercontent.com/quasialex/MagicMirrorPiO2W/master/run-start.sh >run-start.sh
 											chmod +x run-start.sh
 											# add fix to disable chromium update checks for a year from time started
 											sudo touch /etc/chromium-browser/customizations/01-disable-update-check;echo CHROMIUM_FLAGS=\"\$\{CHROMIUM_FLAGS\} --check-for-update-interval=31536000\" | sudo tee /etc/chromium-browser/customizations/01-disable-update-check >/dev/null
@@ -1142,7 +1142,7 @@ if [ -d ~/$mfn ]; then
 												# make sure we have the coe locally to get that info
 												if [ ! -f ~/$mfn/installers/dumpactivemodules.js ]; then
 													echo downloading dumpactivemodules script >> $logfile
-													curl -sL https://raw.githubusercontent.com/sdetweil/MagicMirror_scripts/master/dumpactivemodules.js> ~/$mfn/installers/dumpactivemodules.js
+													curl -sL https://raw.githubusercontent.com/quasialex/MagicMirrorPiO2W/master/dumpactivemodules.js > ~/$mfn/installers/dumpactivemodules.js
 													justloaded=true
 												fi
 
