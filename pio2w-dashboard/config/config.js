@@ -227,6 +227,7 @@ let config = {
 				articleTimeoutMs: 12000
 			}
 		},
+		
 		{
 			module: "MMM-pages",
 			config: {

@@ -1032,3 +1032,148 @@ body .module.news-detail .rss-article-body {
   white-space: pre-wrap !important;
 }
 
+
+
+/* ============================================================
+   v0.1.6 CHATGPT LAUNCHER
+   Lightweight same-window launcher for ChatGPT web.
+   ============================================================ */
+
+body .module.chatgpt-launcher-home {
+  position: fixed !important;
+  top: 168px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: 112px !important;
+  height: 66px !important;
+  z-index: 45 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: center !important;
+}
+
+body .module.chatgpt-launcher-home .module-content {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.chatgpt-launcher {
+  width: 112px !important;
+  height: 66px !important;
+}
+
+.chatgpt-launcher-button {
+  width: 112px !important;
+  height: 66px !important;
+  border-radius: 18px !important;
+  border: 2px solid rgba(255,255,255,0.58) !important;
+  background: rgba(255,255,255,0.10) !important;
+  color: white !important;
+  box-sizing: border-box !important;
+  padding: 5px 4px !important;
+
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  font-family: inherit !important;
+  text-align: center !important;
+  cursor: pointer !important;
+  text-shadow: none !important;
+}
+
+.chatgpt-launcher-button:active {
+  background: rgba(255,255,255,0.20) !important;
+  transform: scale(0.98) !important;
+}
+
+.chatgpt-launcher-icon {
+  font-size: 20px !important;
+  line-height: 1 !important;
+  font-weight: 900 !important;
+  margin-bottom: 2px !important;
+}
+
+.chatgpt-launcher-label {
+  font-size: 20px !important;
+  line-height: 1 !important;
+  font-weight: 900 !important;
+}
+
+.chatgpt-launcher-hint {
+  font-size: 11px !important;
+  line-height: 1.05 !important;
+  font-weight: 700 !important;
+  opacity: 0.72 !important;
+  margin-top: 3px !important;
+}
+
+
+/* ============================================================
+   v0.1.7 CHATGPT LAUNCHER KEYBOARD TEST
+   Simple GPT launcher. Starts system keyboard before opening ChatGPT.
+   ============================================================ */
+
+body .module.chatgpt-launcher-home {
+  position: fixed !important;
+  top: 168px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: 104px !important;
+  height: 58px !important;
+  z-index: 45 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: center !important;
+}
+
+body .module.chatgpt-launcher-home .module-content {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.chatgpt-launcher {
+  width: 104px !important;
+  height: 58px !important;
+}
+
+.chatgpt-launcher-button {
+  width: 104px !important;
+  height: 58px !important;
+  border-radius: 18px !important;
+  border: 2px solid rgba(255,255,255,0.58) !important;
+  background: rgba(255,255,255,0.10) !important;
+  color: white !important;
+  box-sizing: border-box !important;
+  padding: 6px 4px !important;
+
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  font-family: inherit !important;
+  text-align: center !important;
+  cursor: pointer !important;
+  text-shadow: none !important;
+}
+
+.chatgpt-launcher-button:active {
+  background: rgba(255,255,255,0.20) !important;
+  transform: scale(0.98) !important;
+}
+
+.chatgpt-launcher-label {
+  font-size: 22px !important;
+  line-height: 1 !important;
+  font-weight: 900 !important;
+}
+
+.chatgpt-launcher-hint {
+  font-size: 11px !important;
+  line-height: 1.05 !important;
+  font-weight: 700 !important;
+  opacity: 0.72 !important;
+  margin-top: 4px !important;
+}
