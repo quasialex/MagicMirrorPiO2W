@@ -1,3 +1,12 @@
+/* DASHBOARD_SETTINGS_BEGIN */
+const dashboardSettings = {
+  weather: { name: "", lat: null, lon: null },
+  calendars: { icloud: "", google: "", holidays: "" },
+  kuma: { url: "", statusPage: "home",
+          rows: ["Server", "Nextcloud", "Network", "Website"] }
+};
+/* DASHBOARD_SETTINGS_END */
+
 /* MagicMirror config for SpotPear 7-inch kitchen dashboard
  * Layout: home dashboard + touch drill-down pages.
  */
@@ -50,21 +59,21 @@ let config = {
 						name: "iCloud",
 						fetchInterval: 15 * 60 * 1000,
 						symbol: "calendar",
-						url: "ICLOUD_CALENDAR_URL"
+						url: dashboardSettings.calendars.icloud
 					},
 					{
 						name: "Google",
 						fetchInterval: 6 * 60 * 60 * 1000,
 						symbol: "calendar",
-						url: "GOOGLE_CALENDAR_URL"
+						url: dashboardSettings.calendars.google
 					},
 					{
 						name: "Holidays",
 						fetchInterval: 12 * 60 * 60 * 1000,
 						symbol: "calendar-check",
-						url: "GOOGLE_HOLIDAY_CALENDAR_URL"
+						url: dashboardSettings.calendars.holidays
 					}
-				]
+				].filter(entry => entry.url)
 			}
 		},
 		// Full calendar page. This keeps location visible and uses larger styling via custom.css.
@@ -83,21 +92,21 @@ let config = {
 						name: "iCloud",
 						fetchInterval: 15 * 60 * 1000,
 						symbol: "calendar",
-						url: "ICLOUD_CALENDAR_URL"
+						url: dashboardSettings.calendars.icloud
 					},
 					{
 						name: "Google",
 						fetchInterval: 6 * 60 * 60 * 1000,
 						symbol: "calendar",
-						url: "GOOGLE_CALENDAR_URL"
+						url: dashboardSettings.calendars.google
 					},
 					{
-						name: "Romania Holidays",
+						name: "Holidays",
 						fetchInterval: 12 * 60 * 60 * 1000,
 						symbol: "calendar-check",
-						url: "GOOGLE_HOLIDAY_CALENDAR_URL"
+						url: dashboardSettings.calendars.holidays
 					}
-				]
+				].filter(entry => entry.url)
 			}
 		},
 		// Compact current weather on Home. Tap it to open the Weather page.
@@ -108,9 +117,9 @@ let config = {
 			config: {
 				weatherProvider: "openmeteo",
 				type: "current",
-				lat: 36.1681,
-				lon: -5.34777,
-				location: "La Línea",
+				lat: dashboardSettings.weather.lat,
+				lon: dashboardSettings.weather.lon,
+				location: dashboardSettings.weather.name,
 				units: "metric",
 				roundTemp: true,
 				onlyTemp: false,
@@ -131,9 +140,9 @@ let config = {
 			config: {
 				weatherProvider: "openmeteo",
 				type: "forecast",
-				lat: 36.1681,
-				lon: -5.34777,
-				location: "La Línea",
+				lat: dashboardSettings.weather.lat,
+				lon: dashboardSettings.weather.lon,
+				location: dashboardSettings.weather.name,
 				units: "metric",
 				roundTemp: true,
 				maxNumberOfDays: 3,
@@ -151,9 +160,9 @@ let config = {
 			config: {
 				weatherProvider: "openmeteo",
 				type: "current",
-				lat: 36.1681,
-				lon: -5.34777,
-				location: "La Línea",
+				lat: dashboardSettings.weather.lat,
+				lon: dashboardSettings.weather.lon,
+				location: dashboardSettings.weather.name,
 				units: "metric",
 				roundTemp: false,
 				onlyTemp: false,
@@ -175,9 +184,9 @@ let config = {
 			config: {
 				weatherProvider: "openmeteo",
 				type: "forecast",
-				lat: 36.1681,
-				lon: -5.34777,
-				location: "La Línea",
+				lat: dashboardSettings.weather.lat,
+				lon: dashboardSettings.weather.lon,
+				location: dashboardSettings.weather.name,
 				units: "metric",
 				roundTemp: true,
 				maxNumberOfDays: 7,
@@ -268,11 +277,11 @@ let config = {
 			position: "top_right",
 			classes: "page-home touch-status service-mini",
 			config: {
-				baseUrl: "http://YOUR_UPTIME_KUMA_IP:3001",
-				statusPage: "home",
+				baseUrl: dashboardSettings.kuma.url,
+				statusPage: dashboardSettings.kuma.statusPage,
 				detailPage: 4,
 				updateInterval: 5 * 60 * 1000,
-				rows: ["Server", "NextCloud", "Network", "Website"]
+				rows: dashboardSettings.kuma.rows
 			}
 		},
 		{
@@ -280,8 +289,8 @@ let config = {
 			position: "middle_center",
 			classes: "page-status kuma-bars-detail",
 			config: {
-				baseUrl: "http://YOUR_UPTIME_KUMA_IP:3001",
-				statusPage: "services",
+				baseUrl: dashboardSettings.kuma.url,
+				statusPage: dashboardSettings.kuma.statusPage,
 				historyHours: 24,
 				bucketMinutes: 60,
 				refreshInterval: 5 * 60 * 1000,
@@ -292,6 +301,19 @@ let config = {
 		}
 	]
 };
+
+
+/* Optional modules require the corresponding user-provided settings. */
+const hasCalendar = Object.values(dashboardSettings.calendars).some(Boolean);
+const hasWeather = Number.isFinite(dashboardSettings.weather.lat) &&
+  Number.isFinite(dashboardSettings.weather.lon) && Boolean(dashboardSettings.weather.name);
+const hasKuma = Boolean(dashboardSettings.kuma.url);
+config.modules = config.modules.filter(item => {
+  if (item.module === "calendar" || item.module === "MMM-CalendarPanel") return hasCalendar;
+  if (item.module === "weather") return hasWeather;
+  if (item.module === "MMM-KumaSummary" || item.module === "MMM-KumaBars") return hasKuma;
+  return true;
+});
 
 /*************** DO NOT EDIT THE LINE BELOW ***************/
 if (typeof module !== "undefined") { module.exports = config; }

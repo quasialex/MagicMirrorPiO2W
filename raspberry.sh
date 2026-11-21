@@ -37,7 +37,6 @@ BAD_NODE_VERSION=21
 NPM_TESTED="V10.9.4" #"V10.8.2" # "V7.11.2"
 NODE_STABLE_BRANCH="${NODE_TESTED:1:2}.x"
 USER=`whoami`
-PM2_FILE=pm2_MagicMirror.json
 forced_arch=
 pm2setup=$false
 JustProd="--only=prod"
@@ -1020,155 +1019,22 @@ curl -fsSL "$DASHBOARD_SCRIPT_URL" -o "$DASHBOARD_INSTALLER"
 bash "$DASHBOARD_INSTALLER"
 rm -f "$DASHBOARD_INSTALLER"
 
-# Use pm2 control like a service MagicMirror
-read -p "Do you want use pm2 (node process manager) for auto starting of your MagicMirror (y/N)?" choice
+# Safe PM2 setup: preserve existing registrations and use the actual MagicMirror path.
+newName=MagicMirror
+read -r -p "Use PM2 to manage MagicMirror (y/N)? " choice
 choice="${choice:-N}"
-if [[ $choice =~ ^[Yy]$ ]]; then
-      echo install and setup pm2 | tee -a $logfile
- 			# assume pm2 will be found on the path
-			pm2cmd=pm2
-			up=""
-			if [ $mac == 'Darwin' ]; then
-				 up="--unsafe-perm"
-				 launchctl=launchctl
-				 launchctl_path=$(which $launchctl)
-				 `export PATH=$PATH:${launchctl_path%/$launchctl}`
-			fi
-			# check to see if already installed
-			pm2_installed=$(which $pm2cmd)
-			if [  "$pm2_installed." != "." ]; then
-			    # does it work?
-					pm2_fails=$(pm2 list | grep -i -m 1 "uptime" | wc -l )
-					if [ $pm2_fails != 1 ]; then
-					   # uninstall it
-						 echo pm2 installed, but does not work, uninstalling >> $logfile
-					   sudo npm uninstall $up -g pm2 >> $logfile
-						 # force reinstall
-				     pm2_installed=
-					fi
-			fi
-			# if not installed
-			if [  "$pm2_installed." == "." ]; then
-				# install it.
-				echo pm2 not installed, installing >>$logfile
-				result=$(sudo npm  $up $JustProd install -g pm2@latest 2>&1)
-				echo pm2 install result $result >>$logfile
-				pm2cmd=pm2
-				# if this is a mac
-				if [ $mac == 'Darwin1' ]; then
-					echo "this is a mac, fixup for path" >>$logfile
-					# get the location of pm2 install
-					# parse the npm install output to get the command
-					pm2cmd=`echo $result | awk -F -  '{print $1}' | tr -d '[:space:]'`
-					c='/pm2'
-					# get the path only
-					echo ${pm2cmd%$c} >installers/pm2path
-				fi
-			fi
-			echo "get the pm2 platform specific startup command" >>$logfile
-			# get the platform specific pm2 startup command
-			v=$($pm2cmd startup | tail -n 1)
-			if [ $mac != 'Darwin' ]; then
-				# check to see if we can get the OS package name (Ubuntu)
-				if [ $(which lsb_release| wc -l) -gt 0 ]; then
-					# fix command
-					# if ubuntu 18.04, pm2 startup gets something wrong
-					if [ $(lsb_release  -r | grep -m1 18.04 | wc -l) -gt 0 ]; then
-						 v=$(echo $v | sed 's/\/bin/\/bin:\/bin/')
-					fi
-				fi
-			fi
-			echo "startup command = $v" >>$logfile
-			# execute the command returned
-         bash -c "$v 2>&1" >>$logfile
-         #$v 2>&1 >>$logfile 2>&1
-			echo "pm2 startup command done" >>$logfile
-			# is this is mac
-			# need to fix pm2 startup, only on catalina
-			if [ $mac == 'Darwin1' ]; then
-                if [ $(sw_vers -productVersion | head -c 6) == '10.15.' ]; then
-					# only do if the faulty tag is present (pm2 may fix this, before the script is fixed)
-					if [ $(grep -m 1 UserName /Users/$USER/Library/LaunchAgents/pm2.$USER.plist | wc -l) -eq 1 ]; then
-						# copy the pm2 startup file config
-						cp  /Users/$USER/Library/LaunchAgents/pm2.$USER.plist .
-						# edit out the UserName key/value strings
-						sed -e '/UserName/{N;d;}' pm2.$USER.plist > pm2.$USER.plist.new
-						# copy the file back
-						sudo cp pm2.$USER.plist.new /Users/$USER/Library/LaunchAgents/pm2.$USER.plist
-					fi
-				fi
-			fi
-		# if the user is no pi, we have to fixup the pm2 json file
-		echo "configure the pm2 config file for MagicMirror" >>$logfile
-		# if the files we need aren't here, get them
-		if [ ! -e installers/pm2_MagicMirror.json ]; then
-			curl -sL https://raw.githubusercontent.com/quasialex/MagicMirrorPiO2W/master/pm2_MagicMirror.json >installers/pm2_MagicMirror.json
-		fi
-		if [ ! -e installers/mm.sh ]; then
-			curl -sl https://raw.githubusercontent.com/quasialex/MagicMirrorPiO2W/master/mm.sh >installers/mm.sh
-			chmod +x installers/mm.sh
-		fi
-		read -p "Do you want to update the PM2 process name? (Default is MagicMirror)  (y/N)" updateName
-		updateName="${updateName:-N}"
-		newName=MagicMirror
-		if [[ $updateName =~ ^[Yy]$ ]]; then
-			read -p "Enter the new PM2 process name: " newName
-			if [ -n "$newName" ]; then
-				# Update the name in pm2_MagicMirror.json
-				echo rename pm2 process in pm2_MagicMirror.json >>$logfile
-				sed -i '/"name"/ s/:.*/: "'"$newName"'",/' installers/pm2_MagicMirror.json
-			fi
-		fi
-		if [ "$USER"  != "pi" ]; then
-			# no need to change mm.sh now
-			echo the user is not pi >>$logfile
-			# go to the installers folder
-			cd installers
-			if [ 0 -gt 1 ]; then
-				# edit the startup script for the right user
-				echo change mm2.sh >>$logfile
-				 if [ ! -e mm_temp.sh ]; then
-				   echo save copy of mm2.sh >> $logfile
-				   cp mm2.sh mm_temp.sh
-				 fi
-				 if [ $(grep pi mm_temp.sh | wc -l) -gt 0 ]; then
-				  echo change hard coded pi username  >> $logfile
-					sed 's/pi/'$USER'/g' mm_temp.sh >mm2.sh
-				 else
-				  echo change relative home path to hard coded path >> $logfile
-				  hf=$(echo $HOME |sed 's/\//\\\//g')
-				  sed 's/\~/'$hf'/g' mm_temp.sh >mm2.sh
-				 fi
-			fi
-			# edit the pm2 config file for the right user
-			echo change $PM2_FILE >>$logfile
-			sed 's/pi/'$USER'/g' $PM2_FILE > pm2_MagicMirror_new.json
-			hf=$(echo $HOME |sed 's/\//\\\//g')
-		   sed -i 's/\~/'$hf'/g' mm.sh
-			# make sure to use the updated file
-			PM2_FILE=pm2_MagicMirror_new.json
-			# if this is a mac, home foilder is in a diffent place, fix that
-			if [ $mac == 'Darwin' ]; then
-				 # copy the path file to the system paths list
-				 #sudo cp ./pm2path /etc/paths.d
-				 # change the name of the home path for mac
-				 sed 's/home/Users/g' $PM2_FILE > pm2_MagicMirror_new1.json
-				 # make sure to use the updated file
-				 PM2_FILE=pm2_MagicMirror_new1.json
-			fi
-			echo now using this config file $PM2_FILE >>$logfile
-			# go back one cd level
-			cd - >/dev/null
-		fi
-		echo start MagicMirror via pm2 now >>$logfile
-		# tell pm2 to start the app defined in the config file
-		$pm2cmd start $HOME/MagicMirror/installers/$PM2_FILE
-		# tell pm2 to save that configuration, for start at boot
-		echo save MagicMirror pm2 config now  >>$logfile
-		$pm2cmd save
-		echo stop MagicMirror via pm2 now >>$logfile
-		#$pm2cmd stop MagicMirror
-		pm2setup=$true
+if [[ "$choice" =~ ^[Yy]$ ]]; then
+  PM2_HELPER="$(mktemp)"
+  if curl -fsSL "https://raw.githubusercontent.com/quasialex/MagicMirrorPiO2W/master/pio2w-dashboard/setup-pm2.sh" -o "$PM2_HELPER"; then
+    if bash "$PM2_HELPER"; then
+      pm2setup=$true
+    else
+      echo "PM2 setup did not complete. Review the error before retrying." | tee -a "$logfile"
+    fi
+  else
+    echo "Could not download the PM2 helper." | tee -a "$logfile"
+  fi
+  rm -f -- "$PM2_HELPER"
 fi
 
 echo " "
