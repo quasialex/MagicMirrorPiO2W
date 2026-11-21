@@ -1,107 +1,77 @@
-# MagicMirror² installation and setup scripts
+# MagicMirrorPiO2W
 
-# DO NOT CLONE this repo, execute by copy/pasting one of the command lines below
+**MagicMirror² on a Raspberry Pi Zero 2 W with a 7-inch SpotPear touchscreen.** A compact dashboard with touch navigation between home, calendar, weather, BBC news and Uptime Kuma status pages. Originally built for a Pi Zero 2 W running Debian 13 / labwc. Other screens and Pi models may require layout adjustments.
 
-These scripts can be used to automate installation and release upgrades.
+**Spotify is optional.** To switch between MagicMirror and a Spotify touchscreen, install the independent [SpotifyTouch](https://github.com/quasialex/SpotifyTouch) companion after MagicMirror is working. SpotifyTouch provides its own Ubuntu backend and Pi kiosk setup wizard; there is no need to enter Spotify settings here.
 
-## Install MagicMirror²
+## 1. Install MagicMirror²
 
-`raspberry.sh` is the installation script, upgraded from the core package.
-
-To execute the install script, copy/paste this line into the terminal window on your device (I can't say PI, cause it works in a lot of other places too).
+If you have not installed MagicMirror yet, follow the [official MagicMirror installation guide](https://docs.magicmirror.builders/getting-started/installation.html) or use this repository's older `raspberry.sh` installation helper:
 
 ```bash
-bash -c  "$(curl -sL https://raw.githubusercontent.com/quasialex/MagicMirrorPiO2W/master/raspberry.sh)"
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/quasialex/MagicMirrorPiO2W/master/raspberry.sh)"
 ```
 
-There is a log file, ~/install.log, created so we can be able to diagnose any problems.
+> The older `raspberry.sh` installer has broader system requirements and behavior; review it before running on an existing system. **Never run it to update an already-working MagicMirror.**
 
-## Upgrade to next MagicMirror version from an existing installation
+## 2. Install the 7-inch dashboard profile
 
-A new MagicMirror version is released once every 90 days (Jan 1, Apr 1, July 1, Oct 1).
-
-`upgrade-script.sh` will do the `git pull` and `npm install`, and refresh npm setup for any modules that might need it.
-The script should handle all the work…
-
-and give you a trial run of all that, only applying changes if you request them.
-
-Give it a try!
-
-This works on Mac as well, copy/paste the following line into the terminal window on your device:
+Run these commands on the **Pi** after MagicMirror is installed:
 
 ```bash
-bash -c  "$(curl -sL https://raw.githubusercontent.com/quasialex/MagicMirrorPiO2W/master/upgrade-script.sh)"
+git clone https://github.com/quasialex/MagicMirrorPiO2W.git
+cd MagicMirrorPiO2W
+bash pio2w-dashboard/install-dashboard.sh
 ```
-No changes are made to the local repo or the working copy.
 
-If you WANT to actually apply the changes, copy/paste this line into the terminal window on your device:
+The installer asks whether to configure **weather** (location name, latitude and longitude), **calendars** (optional iCloud, Google or holiday ICS URLs) and an **Uptime Kuma** status page (URL, slug, row names). Leave an optional feature empty to leave that panel out. It stores your private values in the local MagicMirror configuration, not in GitHub.
+
+**Existing configuration:** the installer preserves an existing `~/MagicMirror/config/config.js` unless you explicitly agree to replace it. It backs up config/CSS changes and never deletes unrelated MagicMirror modules. If you're already using a custom dashboard, start with the dry run instead:
 
 ```bash
-bash -c  "$(curl -sL https://raw.githubusercontent.com/quasialex/MagicMirrorPiO2W/master/upgrade-script.sh)" apply
+bash pio2w-dashboard/install-dashboard.sh --dry-run
 ```
-There is a log file (`upgrade.log`)  in the `MagicMirror/installers` folder.
 
-## Additional scripts that may be useful
+For another MagicMirror installation path, prefix the command with `MM_DIR=/path/to/MagicMirror`.
 
-The install has two sections of additional support.
-
-I have provided those separately here too, in case you need to run one separately, or changed your mind after install.
-
-### Turn off screen saver 
-
-`screensaveroff.sh`, copy/paste this line into the terminal window on your device:
+After installation, review `~/MagicMirror/config/config.js`, then restart your existing MagicMirror process (for example `pm2 restart MagicMirror`). To undo profile config/CSS changes:
 
 ```bash
-bash -c "$(curl -sL https://raw.githubusercontent.com/quasialex/MagicMirrorPiO2W/master/screensaveroff.sh)"
+bash pio2w-dashboard/rollback-dashboard.sh
 ```
-### Add using pm2 to autostart MagicMirror at bootup
 
-`fixuppm2.sh`, copy/paste this line into the terminal window on your device:
+## 3. Optional: SpotifyTouch companion
+
+On a separate **x86-64 Ubuntu host**, install the [SpotifyTouch backend](https://github.com/quasialex/SpotifyTouch):
 
 ```bash
-bash -c "$(curl -sL https://raw.githubusercontent.com/quasialex/MagicMirrorPiO2W/master/fixuppm2.sh)"
+git clone https://github.com/quasialex/SpotifyTouch.git
+cd SpotifyTouch
+bash scripts/install-ubuntu.sh
 ```
 
-## Switch to the Midori or firefox or surf browser
-When using the Browser over server mode (instead of the built in electron browser) as shown by package.json using "start":"./run-start.sh", you MAY be able to change which Browser to use, see below
-
-Especially low powered devices like the Pi Zero W might struggle running MagicMirror with the Chromium browser. A simpler browser like Midori, Firefox, or Surf might be a good alternative in this case. To switch to using the Midori  browser, change the `MagicMirror/installers/mm.sh` file to include the `external_browser` variable like this:
+Then on the **Pi**, run the SpotifyTouch Pi installer and choose **2 — MagicMirror companion**:
 
 ```bash
-cd ~/MagicMirror
-export external_browser=midori
-DISPLAY=:0 npm start
+git clone https://github.com/quasialex/SpotifyTouch.git
+cd SpotifyTouch
+bash scripts/install-pi.sh
 ```
 
-To switch to using the Firefox browser change the `MagicMirror/installers/mm.sh` file to include the `external_browser` like this:
+That wizard asks for the Ubuntu host once, an SSH username and (optionally) a Bluetooth speaker. It installs the Spotify launcher, persistent kiosk, SSH tunnel and on-demand audio without copying SpotifyTouch into this repository. Full instructions and caveats are in the [SpotifyTouch README](https://github.com/quasialex/SpotifyTouch#readme).
 
+## Useful commands
 
 ```bash
-cd ~/MagicMirror
-export external_browser=firefox
-DISPLAY=:0 npm start
+pm2 status                  # MagicMirror process (if using PM2)
+pm2 restart MagicMirror    # Restart an existing MagicMirror process
+node --check ~/MagicMirror/config/config.js
 ```
 
-To switch to using the Surf browser change the `MagicMirror/installers/mm.sh` file to include the `external_browser` like this:
+If MagicMirror isn't registered with PM2 yet, `bash pio2w-dashboard/setup-pm2.sh` can register the current launcher without replacing an existing process. To enable startup at boot, follow the command printed by `pm2 startup`, then run `pm2 save`.
 
-
-```bash
-cd ~/MagicMirror
-export external_browser=surf
-DISPLAY=:0 npm start
-```
-
-if you want to setup an external browser over server mode, then run the script 
-
-`setup_browser_over_server.sh`, copy/paste this line into the terminal window on your device:
-
-```bash
-bash -c "$(curl -sL https://raw.githubusercontent.com/quasialex/MagicMirrorPiO2W/master/setup_browser_over_server.sh)"
-```
+For upgrades to core MagicMirror, use the project's [official update instructions](https://docs.magicmirror.builders/getting-started/upgrade-guide.html) or review this repo's `upgrade-script.sh` separately. The dashboard installer does not upgrade the core application.
 
 ## Credits
 
-The MagicMirror installation script foundation is based on Sam Detweiler's MagicMirror scripts:
-https://github.com/sdetweil/MagicMirror_scripts
-
-This repository adds a Pi Zero 2 W / 7-inch touchscreen dashboard profile, custom modules, styling, and installer integration.
+MagicMirror² is maintained by [MagicMirrorOrg](https://github.com/MagicMirrorOrg/MagicMirror). Earlier installation scripts in this repository were based on [sdetweil/MagicMirror_scripts](https://github.com/sdetweil/MagicMirror_scripts). SpotifyTouch is maintained separately.
