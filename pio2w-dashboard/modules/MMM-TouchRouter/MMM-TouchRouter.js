@@ -21,6 +21,15 @@ Module.register("MMM-TouchRouter", {
 		}, 250);
 	},
 
+	notificationReceived: function (notification, payload) {
+    		if (notification === "NEW_PAGE" &&
+        		typeof payload === "number" &&
+        		payload !== this.currentPage) {
+        		this.currentPage = payload;
+        		this.updateDom(0);
+    	}
+	},
+
 	getDom: function () {
 		const wrapper = document.createElement("div");
 		wrapper.className = "touch-router-wrapper";

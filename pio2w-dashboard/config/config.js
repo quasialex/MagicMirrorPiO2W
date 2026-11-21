@@ -2,8 +2,9 @@
 const dashboardSettings = {
   weather: { name: "", lat: null, lon: null },
   calendars: { icloud: "", google: "", holidays: "" },
-  kuma: { url: "", statusPage: "home",
-          rows: ["Server", "Nextcloud", "Network", "Website"] }
+  kuma: { url: "", statusPage: "home", detailStatusPage: "services",
+          rows: ["Server", "NextCloud", "Network", "Website"] },
+  news: { title: "BBC", url: "https://feeds.bbci.co.uk/news/world/rss.xml" }
 };
 /* DASHBOARD_SETTINGS_END */
 
@@ -205,8 +206,8 @@ let config = {
 			config: {
 				feeds: [
 					{
-						title: "BBC",
-						url: "https://feeds.bbci.co.uk/news/world/rss.xml"
+						title: dashboardSettings.news.title,
+						url: dashboardSettings.news.url
 					}
 				],
 				showSourceTitle: true,
@@ -224,13 +225,16 @@ let config = {
 		},
 		{
 			module: "MMM-RSSPanel",
-			header: "BBC News",
+			header: "News",
 			position: "middle_center",
 			classes: "page-news news-detail",
 			config: {
-				feedUrl: "https://feeds.bbci.co.uk/news/world/rss.xml",
+				feedUrl: dashboardSettings.news.url,
 				maxItems: 20,
 				refreshInterval: 30 * 60 * 1000,
+				scrollStep: 180,
+				articlePrefetchEnabled: false,
+				articlePrefetchMaxItems: 0,
 				articleCacheHours: 24,
 				articleMaxChars: 12000,
 				articleTimeoutMs: 12000
@@ -275,7 +279,7 @@ let config = {
 		{
 			module: "MMM-KumaSummary",
 			position: "top_right",
-			classes: "page-home touch-status service-mini",
+			classes: "page-home service-mini",
 			config: {
 				baseUrl: dashboardSettings.kuma.url,
 				statusPage: dashboardSettings.kuma.statusPage,
@@ -290,7 +294,7 @@ let config = {
 			classes: "page-status kuma-bars-detail",
 			config: {
 				baseUrl: dashboardSettings.kuma.url,
-				statusPage: dashboardSettings.kuma.statusPage,
+				statusPage: dashboardSettings.kuma.detailStatusPage,
 				historyHours: 24,
 				bucketMinutes: 60,
 				refreshInterval: 5 * 60 * 1000,
