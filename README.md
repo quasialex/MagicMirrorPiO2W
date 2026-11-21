@@ -4,6 +4,12 @@
 
 **Spotify is optional.** To switch between MagicMirror and a Spotify touchscreen, install the independent [SpotifyTouch](https://github.com/quasialex/SpotifyTouch) companion after MagicMirror is working. SpotifyTouch provides its own Ubuntu backend and Pi kiosk setup wizard; there is no need to enter Spotify settings here.
 
+## Dashboard preview
+
+Actual 1024 × 600 screenshot from the Raspberry Pi Zero 2 W touchscreen. The dashboard shows calendar events, weather, news, and Uptime Kuma service status; tap the panels to open their detail views.
+
+![MagicMirrorPiO2W touchscreen dashboard with calendar, weather forecast, BBC news, and service status](docs/screenshots/magicmirror-dashboard.png)
+
 ## 1. Install MagicMirror²
 
 If you have not installed MagicMirror yet, follow the [official MagicMirror installation guide](https://docs.magicmirror.builders/getting-started/installation.html) or use this repository's older `raspberry.sh` installation helper:
